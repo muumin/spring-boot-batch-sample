@@ -1,0 +1,12 @@
+/.idea
+/.gradle
+/*.iml
+/*.ipr
+/*.iws
+build
+logs
+test.groovy
+/classes
+/db
+
+src/main/resources/sample-data.csv

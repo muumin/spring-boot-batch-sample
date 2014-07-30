@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    driverClassName: org.hsqldb.jdbc.JDBCDriver
+#    url: jdbc:hsqldb:mem:scratchdb
+    url: jdbc:hsqldb:file:db/test
+#    schema: SAMPLE
+#    username:test
+#    password:test
+    platform: hsqldb
+    # false でschema.sql,data.sqlでのデータ初期化が行われなくなる
+    initialize: true
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+#      ddl-auto: create-drop
+    database: hsql
+    show-sql: true
+
+  batch:
+    job:
+      names: sendMailJob
+      enabled: true
+    initializer:
+      enabled: true
+
+  velocity:
+    checkTemplateLocation: false
+
+logging:
+  file: logs/app.log
+
+java:
+  mail:
+    from: hoge@example.com
+    host: 192.168.1.82
+    port: 1025
+    username: hoge
+    password: hoge
