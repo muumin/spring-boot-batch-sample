@@ -1,5 +1,6 @@
 package sample.batch.batch.processor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
@@ -14,9 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class SendMailProcessor implements ItemProcessor<Person, SimpleMailMessage> {
-    private final Logger LOGGER = LoggerFactory.getLogger(SendMailProcessor.class);
-
     @Autowired
     private VelocityEngineSupport velocityEngineSupport;
 
@@ -27,7 +27,7 @@ public class SendMailProcessor implements ItemProcessor<Person, SimpleMailMessag
     public SimpleMailMessage process(Person item) throws Exception {
         SimpleMailMessage message = new SimpleMailMessage();
 
-        LOGGER.debug("{} {} email:{}", item.getFirstName(), item.getLastName(), item.getMail());
+        log.debug("{} {} email:{}", item.getFirstName(), item.getLastName(), item.getMail());
 
         message.setFrom(from);
         message.setTo(item.getMail());

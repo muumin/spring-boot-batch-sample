@@ -1,5 +1,6 @@
 package sample.batch.batch;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
@@ -29,9 +30,8 @@ import javax.persistence.EntityManagerFactory;
 
 @Configuration
 @EnableBatchProcessing
+@Slf4j
 public class SendMailBatchConfiguration {
-    private final Logger LOGGER = LoggerFactory.getLogger(SendMailBatchConfiguration.class);
-
     @Bean(name = "csvItemReader")
     public ItemReader<Person> csvItemReader() {
         FlatFileItemReader<Person> reader = new FlatFileItemReader<>();
