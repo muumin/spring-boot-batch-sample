@@ -7,16 +7,16 @@ defaultTasks "clean", "build", "bootRun"
 
 project.ext {
     artifactId = 'spring-boot-batch-sample'
-    springBootVersion = '1.1.4.RELEASE'
-    springIntegrationVersion = '4.0.2.RELEASE'
+    springBootVersion = '1.2.3.RELEASE'
+    springIntegrationVersion = '4.1.4.RELEASE'
 }
 
 def defaultEncoding = 'UTF-8'
 tasks.withType(AbstractCompile) each { it.options.encoding = defaultEncoding }
 tasks.withType(GroovyCompile) each { it.groovyOptions.encoding = defaultEncoding }
 
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 buildscript {
     repositories { jcenter() }
@@ -30,20 +30,23 @@ repositories {
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-batch:$springBootVersion")
-    compile("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
-    compile("org.springframework.boot:spring-boot-starter-velocity:$springBootVersion")
-    compile("org.springframework.integration:spring-integration-mail:$springIntegrationVersion")
-    compile("javax.mail:mail:1.4.7")
+    compile "org.springframework.boot:spring-boot-starter-batch:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
+    compile "org.springframework.integration:spring-integration-mail:$springIntegrationVersion"
+    compile 'javax.mail:mail:1.4.7'
+    compile 'org.hibernate:hibernate-validator:5.1.3.Final'
+    compile 'org.apache.velocity:velocity:1.7'
+    compile 'javax.el:el-api:2.2'
+    compile 'org.projectlombok:lombok:1.16.4'
 
 //    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
-    testCompile("org.codehaus.groovy:groovy-all:2.2.2")
-    testCompile('org.spockframework:spock-core:0.7-groovy-2.0')
-    testCompile('cglib:cglib-nodep:3.1')
-    testCompile('org.objenesis:objenesis:2.1')
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+    testCompile 'cglib:cglib-nodep:3.1'
+    testCompile 'org.objenesis:objenesis:2.1'
 }
 
-task wrapper(type: Wrapper) { gradleVersion = '1.12' }
+task wrapper(type: Wrapper) { gradleVersion = '2.4' }
 
 eclipse {
     pathVariables GRADLE_REPO: file(System.properties['user.home'] + '/.gradle/cache')
