@@ -7,7 +7,7 @@ defaultTasks "clean", "build", "bootRun"
 
 project.ext {
     artifactId = 'spring-boot-batch-sample'
-    springBootVersion = '1.2.3.RELEASE'
+    springBootVersion = '1.2.4.RELEASE'
     springIntegrationVersion = '4.1.4.RELEASE'
 }
 
@@ -38,6 +38,7 @@ dependencies {
     compile 'org.apache.velocity:velocity:1.7'
     compile 'javax.el:el-api:2.2'
     compile 'org.projectlombok:lombok:1.16.4'
+    compile 'args4j:args4j:2.32'
 
 //    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
@@ -52,7 +53,7 @@ eclipse {
     pathVariables GRADLE_REPO: file(System.properties['user.home'] + '/.gradle/cache')
 }
 
-run {
+bootRun {
     if (project.hasProperty('args')) {
         args project.args.split('\\s+')
     }

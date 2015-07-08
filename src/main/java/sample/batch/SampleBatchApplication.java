@@ -1,81 +1,75 @@
 package sample.batch;
 
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.resource.loader.DataSourceResourceLoader;
-import org.apache.velocity.runtime.resource.loader.ResourceLoader;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameter;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import javax.sql.DataSource;
 
 
 @SpringBootApplication
-public class SampleBatchApplication {
+@Slf4j
+public class SampleBatchApplication implements CommandLineRunner {
+    @Autowired
+    JobLauncher jobLauncher;
 
-    @Value("${java.mail.host}")
-    private String host;
-
-    @Value("${java.mail.port}")
-    private Integer port;
-
-    @Value("${java.mail.username}")
-    private String username;
-
-    @Value("${java.mail.password}")
-    private String password;
+    @Autowired
+    Job sendMailJob;
 
     public static void main(String[] args) throws Exception {
-        System.exit(SpringApplication.exit(SpringApplication.run(
-                SampleBatchApplication.class, args)));
+        SpringApplication.run(SampleBatchApplication.class, args);
     }
 
-    @Bean
-    public MailSender javaMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(host);
-        mailSender.setPort(port);
-        mailSender.setUsername(username);
-        mailSender.setPassword(password);
+    @Override
+    public void run(String... args) throws Exception {
+        CommandLineOptions option = getOptions(args);
+        option.getMode().ifPresent(s -> log.debug("Command line option = {}", s));
 
-        Properties javaMailProperties = new Properties();
-        javaMailProperties.put("mail.smtp.auth", true);
-        javaMailProperties.put("mail.smtp.starttls.enable", true);
-        mailSender.setJavaMailProperties(javaMailProperties);
-
-        return mailSender;
+        JobExecution jobExecution = jobLauncher.run(sendMailJob, createInitialJobParameterMap());
+        executionTimeLog(jobExecution);
     }
 
-    @Bean
-    public ResourceLoader templateLoader(DataSource dataSource) {
-        DataSourceResourceLoader loader = new DataSourceResourceLoader();
-        loader.setDataSource(dataSource);
-        return loader;
+    private void executionTimeLog(JobExecution jobExecution) {
+        if (!log.isDebugEnabled()) {
+            return;
+        }
+
+        log.debug("Execution time {} in {} ms", jobExecution.getJobInstance().getJobName(),
+                jobExecution.getEndTime().getTime() - jobExecution.getStartTime().getTime());
+        jobExecution.getStepExecutions().forEach(s ->
+                        log.debug("Execution time {} in {} ms", s.getStepName(), s.getEndTime().getTime() - s.getStartTime().getTime())
+        );
     }
 
-    @Bean
-    public VelocityEngine velocityDBEngine(ResourceLoader templateLoader) throws IOException {
-        VelocityEngineFactoryBean velocityEngineFactoryBean = new VelocityEngineFactoryBean();
-        velocityEngineFactoryBean.setPreferFileSystemAccess(false);
+    private CommandLineOptions getOptions(String... args) throws CmdLineException {
+        // gradlew bootRun -Pargs="-m DAY"
+        CommandLineOptions option = new CommandLineOptions();
+        CmdLineParser parser = new CmdLineParser(option);
+        try {
+            parser.parseArgument(args);
+            return option;
+        } catch (CmdLineException ex) {
+            log.error("Exception: {}", ex.getMessage());
+            System.out.println(ex.getMessage());
+            parser.printUsage(System.err);
+            throw ex;
+        }
+    }
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("resource.loader", "ds");
-        map.put("ds.resource.loader.instance", templateLoader);
-        map.put("ds.resource.loader.resource.table", "velocity_template");
-        map.put("ds.resource.loader.resource.keycolumn", "id");
-        map.put("ds.resource.loader.resource.templatecolumn", "def");
-        map.put("ds.resource.loader.resource.timestampcolumn", "last_modified");
-
-        velocityEngineFactoryBean.setVelocityPropertiesMap(map);
-
-        return velocityEngineFactoryBean.createVelocityEngine();
+    private JobParameters createInitialJobParameterMap() {
+        Map<String, JobParameter> m = new HashMap<>();
+        // 同じパラメーターのバッチは実行されないのでミリ秒で再実行
+        m.put("time", new JobParameter(System.currentTimeMillis()));
+        return new JobParameters(m);
     }
 }

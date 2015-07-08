@@ -1,9 +1,9 @@
 package sample.batch.batch;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.JobParametersValidator;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -36,6 +36,7 @@ public class SendMailBatchConfiguration {
     public ItemReader<Person> csvItemReader() {
         FlatFileItemReader<Person> reader = new FlatFileItemReader<>();
         reader.setResource(new ClassPathResource("sample-data.csv"));
+//        reader.setResource(new FileSystemResource("sample-data.csv"));
         reader.setLineMapper(new DefaultLineMapper<Person>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setNames(new String[]{"firstName", "lastName", "mail"});
@@ -73,9 +74,19 @@ public class SendMailBatchConfiguration {
         return writer;
     }
 
+    @Bean(name = "sendMailJobParametersValidator")
+    public JobParametersValidator sendMailJobParametersValidator() {
+        return parameters -> {
+            if (parameters.getLong("time") == 0) {
+                throw new JobParametersInvalidException("");
+            }
+        };
+    }
+
     @Bean(name = "sendMailJob")
-    public Job sendMailJob(JobBuilderFactory jobs, Step sendMailStep, Step insertDataStep) throws Exception {
+    public Job sendMailJob(JobBuilderFactory jobs, Step sendMailStep, Step insertDataStep, JobParametersValidator sendMailJobParametersValidator) throws Exception {
         return jobs.get("sendMailJob")
+                .validator(sendMailJobParametersValidator)
                 .incrementer(new RunIdIncrementer())
                 .start(insertDataStep)
                 .next(sendMailStep)

@@ -19,10 +19,12 @@ spring:
 
   batch:
     job:
-      names: sendMailJob
-      enabled: true
-    initializer:
-      enabled: true
+#      names: sendMailJob
+       # mainを実行した際にJobを実行するかどうか
+#      enabled: true
+      enabled: false
+#    initializer:
+#      enabled: true
 
   velocity:
     checkTemplateLocation: false
