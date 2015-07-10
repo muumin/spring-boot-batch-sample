@@ -8,14 +8,15 @@ spring:
 #    password:test
     platform: hsqldb
     # false でschema.sql,data.sqlでのデータ初期化が行われなくなる
-    initialize: true
+    initialize: false
 
   jpa:
     hibernate:
       ddl-auto: none
 #      ddl-auto: create-drop
     database: hsql
-    show-sql: true
+    # 標準出力にSQLを表示するならtrue
+    show-sql: false
 
   batch:
     job:

@@ -2,6 +2,7 @@ apply plugin: "idea"
 apply plugin: "eclipse"
 apply plugin: "groovy"
 apply plugin: 'spring-boot'
+apply plugin: 'org.flywaydb.flyway'
 
 defaultTasks "clean", "build", "bootRun"
 
@@ -21,7 +22,9 @@ targetCompatibility = '1.8'
 buildscript {
     repositories { jcenter() }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.1.RELEASE")
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.4.RELEASE'
+        classpath 'org.hsqldb:hsqldb:2.3.2'
+        classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
     }
 }
 
@@ -39,6 +42,8 @@ dependencies {
     compile 'javax.el:el-api:2.2'
     compile 'org.projectlombok:lombok:1.16.4'
     compile 'args4j:args4j:2.32'
+    compile 'org.flywaydb:flyway-core:3.2.1'
+    runtime 'org.hsqldb:hsqldb:2.3.2'
 
 //    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
@@ -51,6 +56,10 @@ task wrapper(type: Wrapper) { gradleVersion = '2.4' }
 
 eclipse {
     pathVariables GRADLE_REPO: file(System.properties['user.home'] + '/.gradle/cache')
+}
+
+flyway {
+    url = 'jdbc:hsqldb:file:db/test'
 }
 
 bootRun {

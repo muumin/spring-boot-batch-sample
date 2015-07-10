@@ -4,23 +4,20 @@ Spring Boot Batch Sample
 
 # 動作
 
-* sample-data.csvからデータを読み込む
+* 取込ファイルからデータを読み込む
 * データをDBへ書き込み
 * データをDBから読み込み
 * データのメールアドレスにメールを送信
 
 # 概要
 
-
 * メール本文のテンプレートはVelocityを使用
     * テンプレートはDBから読み込んでいる
-    * 初期データはsrc/resources/data-hsqldb.sql
-    * 本文はBLOB型なので16進ダンプに変更する必要がある
-        * [16進ダンプ参考サイト](http://d.hatena.ne.jp/oitomo/20090929/1254253786)
+    * 初期データはflywayのマイグレーションファイル(db.migrationパッケージ)
 
 # 実行
 
-* sample-data.csvを作成
+* 取込ファイルを作成
 
 src/resources/sample-data.csv
 

@@ -21,10 +21,10 @@ import java.util.Map;
 @Slf4j
 public class SampleBatchApplication implements CommandLineRunner {
     @Autowired
-    JobLauncher jobLauncher;
+    private JobLauncher jobLauncher;
 
     @Autowired
-    Job sendMailJob;
+    private Job sendMailJob;
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(SampleBatchApplication.class, args);
