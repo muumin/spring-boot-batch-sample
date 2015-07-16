@@ -1,10 +1,13 @@
 package sample.batch.batch;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.JobParametersValidator;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -84,7 +87,7 @@ public class SendMailBatchConfiguration {
     public JobParametersValidator sendMailJobParametersValidator() {
         return parameters -> {
             if (parameters.getLong("time") == 0) {
-                throw new JobParametersInvalidException("");
+                throw new JobParametersInvalidException("time parameter is not found.");
             }
         };
     }
@@ -124,11 +127,29 @@ public class SendMailBatchConfiguration {
                 .build();
     }
 
+    @Bean(name = "taskletlStepListener")
+    public StepExecutionListener taskletlStepListener() {
+        return new StepExecutionListener() {
+            @Override
+            public void beforeStep(StepExecution stepExecution) {
+                log.debug("taskletlStepListener beforeStep");
+            }
+
+            @Override
+            public ExitStatus afterStep(StepExecution stepExecution) {
+                log.debug("taskletlStepListener afterStep");
+                return null;
+            }
+        };
+    }
+
     @Bean(name = "taskletlStep")
-    public Step taskletlStep(StepBuilderFactory steps) {
-        return steps.get("taskletlStep").tasklet((contribution, chunkContext) -> {
-            log.debug("Initialize tasklet step!!");
-            return RepeatStatus.FINISHED;
-        }).build();
+    public Step taskletlStep(StepBuilderFactory steps, StepExecutionListener taskletlStepListener) {
+        return steps.get("taskletlStep")
+                .listener(taskletlStepListener)
+                .tasklet((contribution, chunkContext) -> {
+                    log.debug("Initialize tasklet step!!");
+                    return RepeatStatus.FINISHED;
+                }).build();
     }
 }

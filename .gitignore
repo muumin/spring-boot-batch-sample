@@ -3,6 +3,7 @@
 /*.iml
 /*.ipr
 /*.iws
+/*.ids
 build
 logs
 test.groovy
