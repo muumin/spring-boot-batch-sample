@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -46,26 +46,22 @@ public class Person {
     @Size(min = 6, max = 320)
     private String mail;
 
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date created;
+    @CreatedDate
+    private LocalDateTime created;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updated;
+    @LastModifiedDate
+    private LocalDateTime updated;
 
-    @Column(nullable = false)
     @Version
-    @NotNull
     private int version;
 
     @PrePersist
     protected void onCreate() {
-        updated = created = new Date();
+        updated = created = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updated = new Date();
+        updated = LocalDateTime.now();
     }
 }

@@ -8,7 +8,7 @@ defaultTasks "clean", "build", "bootRun"
 
 project.ext {
     artifactId = 'spring-boot-batch-sample'
-    springBootVersion = '1.2.4.RELEASE'
+    springBootVersion = '1.2.5.RELEASE'
     springIntegrationVersion = '4.1.4.RELEASE'
 }
 
@@ -22,7 +22,7 @@ targetCompatibility = '1.8'
 buildscript {
     repositories { jcenter() }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.4.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE'
         classpath 'org.hsqldb:hsqldb:2.3.2'
         classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
     }
@@ -44,6 +44,7 @@ dependencies {
 
     compile 'org.flywaydb:flyway-core:3.2.1'
     runtime 'org.hsqldb:hsqldb:2.3.2'
+    compile 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
     compile 'org.projectlombok:lombok:1.16.4'
     compile 'args4j:args4j:2.32'

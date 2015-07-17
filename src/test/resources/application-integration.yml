@@ -1,3 +1,5 @@
 spring:
   datasource:
-    url: jdbc:hsqldb:file:db/test_integration
+    driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:hsqldb:file:db/test_integration
+#    url: jdbc:hsqldb:file:db/test_integration

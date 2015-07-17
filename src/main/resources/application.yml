@@ -1,7 +1,12 @@
 spring:
+  main:
+    # 起動時のバーナー表示OFF バーナーはbanner.txtで設定可能
+    show-banner: false
+
   datasource:
+#    driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+#    url: jdbc:log4jdbc:hsqldb:file:db/test
     driverClassName: org.hsqldb.jdbc.JDBCDriver
-#    url: jdbc:hsqldb:mem:scratchdb
     url: jdbc:hsqldb:file:db/test
 #    schema: SAMPLE
 #    username:test
@@ -9,6 +14,10 @@ spring:
     platform: hsqldb
     # false でschema.sql,data.sqlでのデータ初期化が行われなくなる
     initialize: false
+#    max-active: 100
+#    max-idle: 20
+#    min-idle: 20
+#    initial-size: 20
 
   jpa:
     hibernate:
@@ -20,8 +29,8 @@ spring:
 
   batch:
     job:
-#      names: sendMailJob
        # mainを実行した際にJobを実行するかどうか
+#      names: sendMailJob
 #      enabled: true
       enabled: false
 #    initializer:

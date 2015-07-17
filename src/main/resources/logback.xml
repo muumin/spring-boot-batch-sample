@@ -3,14 +3,14 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <target>System.out</target>
         <encoder>
-            <pattern>%d{yyyy/MM/dd HH:mm:ss} %-5level %msg%n</pattern>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} [%thread] %level %logger{0} - %msg \(%file:%line\)%n</pattern>
         </encoder>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/app.log</file>
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>%d{yyyy/MM/dd HH:mm:ss} %-5level %msg%n</pattern>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} [%thread] %level %logger{0} - %msg \(%file:%line\)%n</pattern>
         </encoder>
     </appender>
     <appender name="SYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
@@ -26,8 +26,16 @@
     <logger name="sample.batch" level="DEBUG"/>
     <logger name="org.springframework.context.annotation.ConfigurationClassEnhancer" level="ERROR"/>
 
+    <!-- log4jdbc-log4j2 -->
+    <logger name="jdbc.sqlonly" level="DEBUG"/>
+    <logger name="jdbc.sqltiming" level="INFO"/>
+    <logger name="jdbc.audit" level="INFO"/>
+    <logger name="jdbc.resultset" level="ERROR"/>
+    <logger name="jdbc.resultsettable" level="ERROR"/>
+    <logger name="jdbc.connection" level="DEBUG"/>
+
     <root level="INFO">
-        <appender-ref ref="STDOUT"/>
+        <!--<appender-ref ref="STDOUT"/>-->
         <appender-ref ref="FILE"/>
     </root>
 </configuration>

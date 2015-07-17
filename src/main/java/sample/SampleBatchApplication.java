@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 @SpringBootApplication
 @Slf4j
 public class SampleBatchApplication implements CommandLineRunner {
@@ -38,8 +37,14 @@ public class SampleBatchApplication implements CommandLineRunner {
     @Autowired
     private Job sendMailJob;
 
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(SampleBatchApplication.class, args);
+    public static void main(String[] args) {
+        try {
+            System.exit(SpringApplication.exit(SpringApplication.run(SampleBatchApplication.class, args)));
+        } catch (Exception ex) {
+            log.error("critical error!!", ex);
+            System.out.println("致命的なエラーが発生しました。詳細はログを確認して下さい。");
+            System.exit(1);
+        }
     }
 
     @Override

@@ -13,9 +13,11 @@ Spring Boot Batch Sample
 
 * メール本文のテンプレートはVelocityを使用
     * テンプレートはDBから読み込んでいる
-    * 初期データはflywayのマイグレーションファイル(db.migrationパッケージ)
+    * 初期データはflywayのマイグレーションファイルを参照(db.migrationパッケージ)
 
 # 実行
+
+## 準備
 
 * 取込ファイルを作成
 
@@ -27,7 +29,20 @@ src/resources/sample-data.csv
 * SMTP設定を変更
     * SMTP設定はsrc/resources/application.yml
 
+## 起動
 
 プロジェクトのホームディレクトリで以下を実行
 
     gradlew
+
+もしくはbuild/libs/spring-boot-batch-sample.jarを直接起動
+
+    java -jar spring-boot-batch-sample.jar
+
+## エラー
+
+エラー等でリスタートが必要な場合、以下を実行することで最新のエラーが発生した箇所から再実行される
+
+    gradlew gradlew bootRun -Pargs="-restart"
+    java -jar spring-boot-batch-sample.jar -restart
+
