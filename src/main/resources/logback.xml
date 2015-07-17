@@ -23,8 +23,8 @@
         <throwableExcluded>true</throwableExcluded>
     </appender>
 
-    <logger name="sample.batch" level="DEBUG" />
-    <logger name="org.springframework.context.annotation.ConfigurationClassEnhancer" level="ERROR" />
+    <logger name="sample.batch" level="DEBUG"/>
+    <logger name="org.springframework.context.annotation.ConfigurationClassEnhancer" level="ERROR"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

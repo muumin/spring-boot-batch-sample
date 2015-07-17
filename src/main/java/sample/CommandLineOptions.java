@@ -27,6 +27,7 @@ public class CommandLineOptions {
     public Optional<Mode> getMode() {
         return Optional.ofNullable(mode);
     }
+
     public Optional<Long> getId() {
         return Optional.ofNullable(id);
     }
