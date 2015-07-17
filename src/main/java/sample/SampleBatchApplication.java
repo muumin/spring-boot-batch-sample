@@ -1,4 +1,4 @@
-package sample.batch;
+package sample;
 
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.args4j.CmdLineException;

@@ -1,11 +1,11 @@
-package sample.batch.batch.processor
+package sample.batch.processor
 
-import sample.batch.domain.Person
-import sample.batch.util.VelocityEngineSupport
+import sample.domain.Person
+import sample.util.VelocityEngineSupport
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class SendMailProcessorTest extends Specification {
+class SendMailProcessorSpec extends Specification {
     @Unroll
     def "メールに「#firstName #lastName」が設定されていること"() {
         setup:

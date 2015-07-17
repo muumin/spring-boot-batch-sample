@@ -1,4 +1,4 @@
-package sample.batch.util;
+package sample.util;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;

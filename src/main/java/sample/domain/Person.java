@@ -1,4 +1,4 @@
-package sample.batch.domain;
+package sample.domain;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

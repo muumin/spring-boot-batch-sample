@@ -1,4 +1,4 @@
-package sample.batch.batch.processor;
+package sample.batch.processor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
-import sample.batch.domain.Person;
-import sample.batch.util.VelocityEngineSupport;
+import sample.domain.Person;
+import sample.util.VelocityEngineSupport;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package sample.batch.batch;
+package sample.batch;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ExitStatus;
@@ -11,8 +11,6 @@ import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.job.flow.Flow;
-import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
@@ -30,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import sample.batch.domain.Person;
+import sample.domain.Person;
 
 import javax.persistence.EntityManagerFactory;
 

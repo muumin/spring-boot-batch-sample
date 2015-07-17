@@ -1,4 +1,4 @@
-package sample.batch.util;
+package sample.util;
 
 import java.util.Map;
 

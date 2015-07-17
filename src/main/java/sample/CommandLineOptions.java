@@ -1,4 +1,4 @@
-package sample.batch;
+package sample;
 
 import lombok.Getter;
 import lombok.Setter;

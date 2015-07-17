@@ -1,4 +1,4 @@
-package sample.batch;
+package sample;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.DataSourceResourceLoader;
