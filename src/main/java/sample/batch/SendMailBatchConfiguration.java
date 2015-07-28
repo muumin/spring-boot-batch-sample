@@ -43,6 +43,7 @@ public class SendMailBatchConfiguration {
         FlatFileItemReader<Person> reader = new FlatFileItemReader<>();
         reader.setResource(new ClassPathResource(FILE_NAME));
 //        reader.setResource(new FileSystemResource(FILE_NAME)); // read system file.
+//        reader.setLinesToSkip(1); // skip header.
         reader.setLineMapper(new DefaultLineMapper<Person>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
 //                setDelimiter(DelimitedLineTokenizer.DELIMITER_TAB); // read tvs.
@@ -104,10 +105,14 @@ public class SendMailBatchConfiguration {
     @Bean(name = "insertDataStep")
     public Step insertDataStep(StepBuilderFactory steps,
                                ItemReader<Person> csvItemReader,
+                               ItemProcessor<Person, Person> personValidationProcessor,
+//                               ItemProcessor<Person, Person> validatingItemProcessor, // ValidationExceptionでバッチ処理が中断するItemProcessor
                                ItemWriter<Person> jpaItemWriter) throws Exception {
         return steps.get("insertDataStep")
                 .<Person, Person>chunk(10)
                 .reader(csvItemReader)
+                .processor(personValidationProcessor)
+//                .processor(validatingItemProcessor)
                 .writer(jpaItemWriter)
                 .build();
     }

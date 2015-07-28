@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -44,6 +45,7 @@ public class Person {
     @Column(length = 320, nullable = false)
     @NotNull
     @Size(min = 6, max = 320)
+    @Email
     private String mail;
 
     @CreatedDate

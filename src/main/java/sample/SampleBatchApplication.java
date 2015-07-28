@@ -53,6 +53,7 @@ public class SampleBatchApplication implements CommandLineRunner {
         option.getMode().ifPresent(s -> log.debug("Command line option = {}", s));
         log.debug("Command line option = {}", option.isRestart());
 
+        // リスタートなら指定されたJobか未指定なら最新のJOBのパラメータを取得する
         Optional<JobParameters> jobParameters = option.isRestart() ? getJobParameter(sendMailJob, option) : createInitialJobParameterMap();
         if (!jobParameters.isPresent()) {
             throw new JobExecutionNotFailedException("No failed or stopped execution found for job=" + sendMailJob.getName());
@@ -90,6 +91,13 @@ public class SampleBatchApplication implements CommandLineRunner {
         }
     }
 
+    private Optional<JobParameters> createInitialJobParameterMap() {
+        Map<String, JobParameter> m = new HashMap<>();
+        // 同じパラメーターのバッチは実行されないのでミリ秒で再実行
+        m.put("time", new JobParameter(System.currentTimeMillis()));
+        return Optional.ofNullable(new JobParameters(m));
+    }
+
     private Optional<JobParameters> getJobParameter(Job job, CommandLineOptions option) {
         List<JobExecution> list = getJobExecutionsWithStatusGreaterThan(job.getName(), option, BatchStatus.STOPPED);
         if (list.isEmpty()) {
@@ -99,13 +107,6 @@ public class SampleBatchApplication implements CommandLineRunner {
         JobExecution jobExecution = list.stream().sorted((s1, s2) -> (int) (s2.getId() - s1.getId())).collect(Collectors.toList()).get(0);
         log.debug("jobExecution: JobExecutionId={}, Status={}", jobExecution.getId(), jobExecution.getStatus());
         return Optional.ofNullable(jobExecution.getJobParameters());
-    }
-
-    private Optional<JobParameters> createInitialJobParameterMap() {
-        Map<String, JobParameter> m = new HashMap<>();
-        // 同じパラメーターのバッチは実行されないのでミリ秒で再実行
-        m.put("time", new JobParameter(System.currentTimeMillis()));
-        return Optional.ofNullable(new JobParameters(m));
     }
 
     private List<JobExecution> getJobExecutionsWithStatusGreaterThan(String jobName, CommandLineOptions option, BatchStatus minStatus) {
