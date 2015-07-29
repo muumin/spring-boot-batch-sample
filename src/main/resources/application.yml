@@ -14,33 +14,33 @@ spring:
     platform: hsqldb
     # false でschema.sql,data.sqlでのデータ初期化が行われなくなる
     initialize: false
+    # コネクションプール数
 #    max-active: 100
 #    max-idle: 20
 #    min-idle: 20
 #    initial-size: 20
+    # コネクションタイムアウト対応
+    testOnBorrow: true
+    validationQuery: SELECT 1
 
   jpa:
     hibernate:
-      ddl-auto: none
-#      ddl-auto: create-drop
+      # create-dropにするとEntity定義でテーブルが作成される
+      ddl-auto: none #create-drop
     database: hsql
     # 標準出力にSQLを表示するならtrue
     show-sql: false
 
   batch:
     job:
-       # mainを実行した際にJobを実行するかどうか
+       # mainを実行した際にnamesのJobを実行するかどうか
 #      names: sendMailJob
-#      enabled: true
       enabled: false
 #    initializer:
 #      enabled: true
 
   velocity:
     checkTemplateLocation: false
-
-logging:
-  file: logs/app.log
 
 java:
   mail:
