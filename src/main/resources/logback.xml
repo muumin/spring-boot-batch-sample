@@ -23,7 +23,7 @@
         <throwableExcluded>true</throwableExcluded>
     </appender>
 
-    <logger name="sample.batch" level="DEBUG"/>
+    <logger name="sample" level="DEBUG"/>
     <logger name="org.springframework.context.annotation.ConfigurationClassEnhancer" level="ERROR"/>
 
     <!-- log4jdbc-log4j2 -->
