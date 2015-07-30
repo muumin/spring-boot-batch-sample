@@ -41,7 +41,7 @@ public class ReaderConfiguration {
         return reader;
     }
 
-    @Bean(destroyMethod = "") // org.springframework.batch.item.ItemStreamException: Error while closing item reader
+    @Bean(destroyMethod = "") // WARNING: org.springframework.batch.item.ItemStreamException: Error while closing item reader
     public ItemReader<Person> jpaItemReader(EntityManagerFactory entityManagerFactory) {
         JpaPagingItemReader<Person> reader = new JpaPagingItemReader<>();
         reader.setEntityManagerFactory(entityManagerFactory);
