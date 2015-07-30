@@ -74,6 +74,7 @@ public class SendMailBatchConfiguration {
     @Bean(name = "sendMailStep")
     public Step sendMailStep(StepBuilderFactory steps,
                              ItemReader<Person> jpaItemReader,
+//                             ItemReader<Person> jdbcPagingItemReader,
                              ItemProcessor<Person, SimpleMailMessage> sendMailProcessor,
                              ItemWriter<SimpleMailMessage> simpleEmailWriter) throws Exception {
         return steps.get("sendMailStep")
