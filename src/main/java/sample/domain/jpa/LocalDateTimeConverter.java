@@ -1,4 +1,4 @@
-package sample.jpa;
+package sample.domain.jpa;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -7,7 +7,7 @@ import javax.persistence.Converter;
 
 //TODO Spring4.2からは不要
 @Converter(autoApply = true)
-public class MyLocalDateTimeConverter implements AttributeConverter<LocalDateTime, Timestamp> {
+public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime, Timestamp> {
 
     @Override
     public Timestamp convertToDatabaseColumn(LocalDateTime attribute) {

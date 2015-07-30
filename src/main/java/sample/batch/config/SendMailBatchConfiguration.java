@@ -1,4 +1,4 @@
-package sample.batch;
+package sample.batch.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ExitStatus;
@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import sample.domain.Person;
+import sample.domain.model.Person;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -36,52 +36,6 @@ import javax.persistence.EntityManagerFactory;
 @EnableBatchProcessing
 @Slf4j
 public class SendMailBatchConfiguration {
-    private final static String FILE_NAME = "sample-data.csv";
-
-    @Bean(name = "csvItemReader")
-    public ItemReader<Person> csvItemReader() {
-        FlatFileItemReader<Person> reader = new FlatFileItemReader<>();
-        reader.setResource(new ClassPathResource(FILE_NAME));
-//        reader.setResource(new FileSystemResource(FILE_NAME)); // read system file.
-//        reader.setLinesToSkip(1); // skip header.
-        reader.setLineMapper(new DefaultLineMapper<Person>() {{
-            setLineTokenizer(new DelimitedLineTokenizer() {{
-//                setDelimiter(DelimitedLineTokenizer.DELIMITER_TAB); // read tvs.
-                setNames(new String[]{"firstName", "lastName", "mail"});
-            }});
-            setFieldSetMapper(new BeanWrapperFieldSetMapper<Person>() {{
-                setTargetType(Person.class);
-            }});
-        }});
-
-        return reader;
-    }
-
-    @Bean(name = "jpaItemReader", destroyMethod = "")
-    public ItemReader<Person> jpaItemReader(EntityManagerFactory entityManagerFactory) {
-        JpaPagingItemReader<Person> reader = new JpaPagingItemReader<>();
-        reader.setEntityManagerFactory(entityManagerFactory);
-        reader.setQueryString("select emp from Person emp");
-
-        return reader;
-    }
-
-    @Bean(name = "simpleEmailWriter")
-    public ItemWriter<SimpleMailMessage> simpleEmailWriter(MailSender javaMailSender) {
-        SimpleMailMessageItemWriter writer = new SimpleMailMessageItemWriter();
-        writer.setMailSender(javaMailSender);
-
-        return writer;
-    }
-
-    @Bean(name = "jpaItemWriter")
-    public ItemWriter<Person> jpaItemWriter(EntityManagerFactory entityManagerFactory) {
-        JpaItemWriter<Person> writer = new JpaItemWriter<>();
-        writer.setEntityManagerFactory(entityManagerFactory);
-
-        return writer;
-    }
-
     @Bean(name = "sendMailJobParametersValidator")
     public JobParametersValidator sendMailJobParametersValidator() {
         return parameters -> {

@@ -1,6 +1,6 @@
 package sample.batch.processor
 
-import sample.domain.Person
+import sample.domain.model.Person
 import sample.util.VelocityEngineSupport
 import spock.lang.Specification
 import spock.lang.Unroll

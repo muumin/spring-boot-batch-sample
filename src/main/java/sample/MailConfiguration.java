@@ -17,7 +17,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 @Configuration
-public class MailConfig {
+public class MailConfiguration {
 
     @Value("${java.mail.host}")
     private String host;

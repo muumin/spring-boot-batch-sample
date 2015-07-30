@@ -1,4 +1,4 @@
-package sample.jpa;
+package sample.domain.jpa;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -7,7 +7,7 @@ import javax.persistence.Converter;
 
 //TODO Spring4.2からは不要
 @Converter(autoApply = true)
-public class MyLocalDateConverter implements AttributeConverter<LocalDate, Date> {
+public class LocalDateConverter implements AttributeConverter<LocalDate, Date> {
 
     @Override
     public Date convertToDatabaseColumn(LocalDate attribute) {

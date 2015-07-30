@@ -1,4 +1,4 @@
-package sample.domain;
+package sample.domain.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

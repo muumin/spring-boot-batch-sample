@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
-import sample.domain.Person;
+import sample.domain.model.Person;
 
 @Component
 @Slf4j
