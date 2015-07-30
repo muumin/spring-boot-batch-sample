@@ -36,7 +36,7 @@ import javax.persistence.EntityManagerFactory;
 @EnableBatchProcessing
 @Slf4j
 public class SendMailBatchConfiguration {
-    @Bean(name = "sendMailJobParametersValidator")
+    @Bean
     public JobParametersValidator sendMailJobParametersValidator() {
         return parameters -> {
             if (parameters.getLong("time") == 0) {
@@ -45,7 +45,7 @@ public class SendMailBatchConfiguration {
         };
     }
 
-    @Bean(name = "sendMailJob")
+    @Bean
     public Job sendMailJob(JobBuilderFactory jobs, Step sendMailStep, Step insertDataStep, Step taskletlStep, JobParametersValidator sendMailJobParametersValidator) throws Exception {
         return jobs.get("sendMailJob")
                 .validator(sendMailJobParametersValidator)
@@ -56,7 +56,7 @@ public class SendMailBatchConfiguration {
                 .build();
     }
 
-    @Bean(name = "insertDataStep")
+    @Bean
     public Step insertDataStep(StepBuilderFactory steps,
                                ItemReader<Person> csvItemReader,
                                ItemProcessor<Person, Person> personValidationProcessor,
@@ -71,7 +71,7 @@ public class SendMailBatchConfiguration {
                 .build();
     }
 
-    @Bean(name = "sendMailStep")
+    @Bean
     public Step sendMailStep(StepBuilderFactory steps,
                              ItemReader<Person> jpaItemReader,
 //                             ItemReader<Person> jdbcPagingItemReader,
@@ -85,7 +85,7 @@ public class SendMailBatchConfiguration {
                 .build();
     }
 
-    @Bean(name = "taskletlStepListener")
+    @Bean
     public StepExecutionListener taskletlStepListener() {
         return new StepExecutionListener() {
             @Override
@@ -101,7 +101,7 @@ public class SendMailBatchConfiguration {
         };
     }
 
-    @Bean(name = "taskletlStep")
+    @Bean
     public Step taskletlStep(StepBuilderFactory steps, StepExecutionListener taskletlStepListener) {
         return steps.get("taskletlStep")
                 .listener(taskletlStepListener)

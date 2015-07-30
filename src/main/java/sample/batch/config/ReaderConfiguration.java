@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 public class ReaderConfiguration {
     private final static String FILE_NAME = "sample-data.csv";
 
-    @Bean(name = "csvItemReader")
+    @Bean
     public ItemReader<Person> csvItemReader() {
         FlatFileItemReader<Person> reader = new FlatFileItemReader<>();
         reader.setResource(new ClassPathResource(FILE_NAME));
@@ -41,7 +41,7 @@ public class ReaderConfiguration {
         return reader;
     }
 
-    @Bean(name = "jpaItemReader", destroyMethod = "")
+    @Bean(destroyMethod = "") // org.springframework.batch.item.ItemStreamException: Error while closing item reader
     public ItemReader<Person> jpaItemReader(EntityManagerFactory entityManagerFactory) {
         JpaPagingItemReader<Person> reader = new JpaPagingItemReader<>();
         reader.setEntityManagerFactory(entityManagerFactory);

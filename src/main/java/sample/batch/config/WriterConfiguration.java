@@ -15,7 +15,7 @@ import javax.persistence.EntityManagerFactory;
 @Configuration
 @Slf4j
 public class WriterConfiguration {
-    @Bean(name = "simpleEmailWriter")
+    @Bean
     public ItemWriter<SimpleMailMessage> simpleEmailWriter(MailSender javaMailSender) {
         SimpleMailMessageItemWriter writer = new SimpleMailMessageItemWriter();
         writer.setMailSender(javaMailSender);
@@ -23,7 +23,7 @@ public class WriterConfiguration {
         return writer;
     }
 
-    @Bean(name = "jpaItemWriter")
+    @Bean
     public ItemWriter<Person> jpaItemWriter(EntityManagerFactory entityManagerFactory) {
         JpaItemWriter<Person> writer = new JpaItemWriter<>();
         writer.setEntityManagerFactory(entityManagerFactory);
