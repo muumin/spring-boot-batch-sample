@@ -57,7 +57,7 @@ dependencies {
     testCompile 'org.objenesis:objenesis:2.1'
 }
 
-task wrapper(type: Wrapper) { gradleVersion = '2.4' }
+task wrapper(type: Wrapper) { gradleVersion = '2.5' }
 
 eclipse {
     pathVariables GRADLE_REPO: file(System.properties['user.home'] + '/.gradle/cache')
