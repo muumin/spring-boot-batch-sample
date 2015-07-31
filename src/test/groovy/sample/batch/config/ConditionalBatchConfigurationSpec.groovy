@@ -17,13 +17,8 @@ class ConditionalBatchConfigurationSpec extends BaseSpecification {
     private Job conditionalJob;
 
     def "Normal"() {
-        setup:
-        Map<String, JobParameter> m = new HashMap<>()
-        m.put("time", new JobParameter(System.currentTimeMillis()))
-        JobParameters jobParameters = new JobParameters(m)
-
         when:
-        JobExecution jobExecution = jobLauncher.run(conditionalJob, jobParameters)
+        JobExecution jobExecution = jobLauncher.run(conditionalJob, getJobParameters())
 
         then:
         jobExecution.getStatus() == BatchStatus.COMPLETED
@@ -36,13 +31,10 @@ class ConditionalBatchConfigurationSpec extends BaseSpecification {
 
     def "Fail1"() {
         setup:
-        Map<String, JobParameter> m = new HashMap<>()
-        m.put("time", new JobParameter(System.currentTimeMillis()))
-        m.put("fail", new JobParameter("1"))
-        JobParameters jobParameters = new JobParameters(m)
+        def m = ["fail" : new JobParameter("1")]
 
         when:
-        JobExecution jobExecution = jobLauncher.run(conditionalJob, jobParameters)
+        JobExecution jobExecution = jobLauncher.run(conditionalJob, getJobParameters(m))
 
         then:
         jobExecution.getStatus() == BatchStatus.COMPLETED
@@ -55,13 +47,10 @@ class ConditionalBatchConfigurationSpec extends BaseSpecification {
 
     def "Fail2"() {
         setup:
-        Map<String, JobParameter> m = new HashMap<>()
-        m.put("time", new JobParameter(System.currentTimeMillis()))
-        m.put("fail", new JobParameter("2"))
-        JobParameters jobParameters = new JobParameters(m)
+        def m = ["fail" : new JobParameter("2")]
 
         when:
-        JobExecution jobExecution = jobLauncher.run(conditionalJob, jobParameters)
+        JobExecution jobExecution = jobLauncher.run(conditionalJob, getJobParameters(m))
 
         then:
         jobExecution.getStatus() == BatchStatus.STOPPED

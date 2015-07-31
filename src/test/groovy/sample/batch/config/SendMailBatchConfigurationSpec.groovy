@@ -17,13 +17,8 @@ class SendMailBatchConfigurationSpec extends BaseSpecification {
     private Job sendMailJob;
 
     def "Normal"() {
-        setup:
-        Map<String, JobParameter> m = new HashMap<>()
-        m.put("time", new JobParameter(System.currentTimeMillis()))
-        JobParameters jobParameters = new JobParameters(m)
-
         when:
-        JobExecution jobExecution = jobLauncher.run(sendMailJob, jobParameters)
+        JobExecution jobExecution = jobLauncher.run(sendMailJob, getJobParameters())
 
         then:
         jobExecution.getStatus() == BatchStatus.COMPLETED
