@@ -10,12 +10,13 @@ import java.util.Optional;
 @Setter
 @ToString
 public class CommandLineOptions {
-    enum Mode {
-        DAY, WEEK
+    enum JobName {
+        sendMailJob, conditionalJob
     }
 
-    @Option(name = "-m", aliases = "--mode", required = false, metaVar = "<mode>", usage = "モード")
-    private Mode mode;
+    @Option(name = "-job", aliases = "--job", required = true, metaVar = "<job>", usage = "実行するJob")
+    @Getter
+    private JobName jobName;
 
     @Option(name = "-id", aliases = "--id", required = false, metaVar = "<id>", usage = "再実行するJobExecutionId")
     private Long id;
@@ -23,10 +24,6 @@ public class CommandLineOptions {
     @Option(name = "-restart", aliases = "--restart", required = false, usage = "再実行")
     @Getter
     private boolean restart;
-
-    public Optional<Mode> getMode() {
-        return Optional.ofNullable(mode);
-    }
 
     public Optional<Long> getId() {
         return Optional.ofNullable(id);

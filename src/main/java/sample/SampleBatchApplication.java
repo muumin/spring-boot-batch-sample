@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +36,7 @@ public class SampleBatchApplication implements CommandLineRunner {
     private JobExplorer jobExplorer;
 
     @Autowired
-    private Job sendMailJob;
+    private ApplicationContext context;
 
     public static void main(String[] args) {
         try {
@@ -49,17 +50,18 @@ public class SampleBatchApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        CommandLineOptions option = getOptions(args);
-        option.getMode().ifPresent(s -> log.debug("Command line option = {}", s));
-        log.debug("Command line option = {}", option.isRestart());
+        Optional<CommandLineOptions> option = getOptions(args);
+        if (!option.isPresent()) return;
+
+        Job job = context.getBean(option.get().getJobName().name(), Job.class);
 
         // リスタートなら指定されたJobか未指定なら最新のJOBのパラメータを取得する
-        Optional<JobParameters> jobParameters = option.isRestart() ? getJobParameter(sendMailJob, option) : createInitialJobParameterMap();
+        Optional<JobParameters> jobParameters = option.get().isRestart() ? getJobParameter(job, option.get()) : createInitialJobParameterMap();
         if (!jobParameters.isPresent()) {
-            throw new JobExecutionNotFailedException("No failed or stopped execution found for job=" + sendMailJob.getName());
+            throw new JobExecutionNotFailedException("No failed or stopped execution found for job=" + job.getName());
         }
 
-        JobExecution jobExecution = jobLauncher.run(sendMailJob, jobParameters.get());
+        JobExecution jobExecution = jobLauncher.run(job, jobParameters.get());
         executionTimeLog(jobExecution);
     }
 
@@ -77,13 +79,18 @@ public class SampleBatchApplication implements CommandLineRunner {
         );
     }
 
-    private CommandLineOptions getOptions(String... args) throws CmdLineException {
-        // gradlew bootRun -Pargs="-m DAY"
+    private Optional<CommandLineOptions> getOptions(String... args) throws CmdLineException {
         CommandLineOptions option = new CommandLineOptions();
         CmdLineParser parser = new CmdLineParser(option);
+
+        if (args.length == 0) {
+            parser.printUsage(System.err);
+            return Optional.empty();
+        }
+
         try {
             parser.parseArgument(args);
-            return option;
+            return Optional.of(option);
         } catch (CmdLineException ex) {
             log.error("Exception: {}", ex.getMessage());
             parser.printUsage(System.err);
@@ -104,7 +111,7 @@ public class SampleBatchApplication implements CommandLineRunner {
             return Optional.empty();
         }
 
-        JobExecution jobExecution = list.stream().sorted((s1, s2) -> (int) (s2.getId() - s1.getId())).collect(Collectors.toList()).get(0);
+        JobExecution jobExecution = list.stream().sorted((s1, s2) -> (int) (s2.getId() - s1.getId())).findFirst().get();
         log.debug("jobExecution: JobExecutionId={}, Status={}", jobExecution.getId(), jobExecution.getStatus());
         return Optional.ofNullable(jobExecution.getJobParameters());
     }
@@ -131,6 +138,5 @@ public class SampleBatchApplication implements CommandLineRunner {
         }
 
         return executions;
-
     }
 }

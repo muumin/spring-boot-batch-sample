@@ -4,7 +4,7 @@ apply plugin: "groovy"
 apply plugin: 'spring-boot'
 apply plugin: 'org.flywaydb.flyway'
 
-defaultTasks "clean", "build", "bootRun"
+defaultTasks "clean", "build"
 
 project.ext {
     artifactId = 'spring-boot-batch-sample'

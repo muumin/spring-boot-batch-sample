@@ -33,16 +33,16 @@ src/resources/sample-data.csv
 
 プロジェクトのホームディレクトリで以下を実行
 
-    gradlew
+    gradlew bootRun -Pargs="-job sendMailJob"
 
 もしくはbuild/libs/spring-boot-batch-sample.jarを直接起動
 
-    java -jar spring-boot-batch-sample.jar
+    java -jar spring-boot-batch-sample.jar -job sendMailJob
 
 ## エラー
 
 エラー等でリスタートが必要な場合、以下を実行することで最新のエラーが発生した箇所から再実行される
 
-    gradlew gradlew bootRun -Pargs="-restart"
-    java -jar spring-boot-batch-sample.jar -restart
+    gradlew bootRun -Pargs="-job sendMailJob -restart"
+    java -jar spring-boot-batch-sample.jar -job sendMailJob -restart
 
