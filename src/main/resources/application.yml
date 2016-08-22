@@ -1,7 +1,7 @@
 spring:
   main:
     # 起動時のバーナー表示OFF バーナーはbanner.txtで設定可能
-    show-banner: false
+    banner-mode: "off"
 
   datasource:
 #    driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
@@ -19,9 +19,9 @@ spring:
 #    max-idle: 20
 #    min-idle: 20
 #    initial-size: 20
-    # コネクションタイムアウト対応
-    testOnBorrow: true
-    validationQuery: SELECT 1
+    # コネクションタイムアウト対応 hsqldbでは使用出来ない
+#    testOnBorrow: true
+#    validationQuery: SELECT 1
 
   jpa:
     hibernate:
@@ -40,12 +40,12 @@ spring:
 #      enabled: true
 
   velocity:
-    checkTemplateLocation: false
+    check-template-location: false
 
 java:
   mail:
     from: hoge@example.com
-    host: 192.168.1.82
+    host: 127.0.0.1
     port: 1025
     username: hoge
     password: hoge

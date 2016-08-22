@@ -11,10 +11,10 @@ import sample.BaseSpecification
 
 class ConditionalBatchConfigurationSpec extends BaseSpecification {
     @Autowired
-    private JobLauncher jobLauncher;
+    private JobLauncher jobLauncher
 
     @Autowired
-    private Job conditionalJob;
+    private Job conditionalJob
 
     def "Normal"() {
         when:

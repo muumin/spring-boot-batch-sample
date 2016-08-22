@@ -8,8 +8,8 @@ defaultTasks "clean", "build"
 
 project.ext {
     artifactId = 'spring-boot-batch-sample'
-    springBootVersion = '1.2.5.RELEASE'
-    springIntegrationVersion = '4.1.4.RELEASE'
+    springBootVersion = '1.4.0.RELEASE'
+    springIntegrationVersion = '4.3.1.RELEASE'
 }
 
 def defaultEncoding = 'UTF-8'
@@ -22,9 +22,9 @@ targetCompatibility = '1.8'
 buildscript {
     repositories { jcenter() }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE'
         classpath 'org.hsqldb:hsqldb:2.3.2'
-        classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
+        classpath 'org.flywaydb:flyway-gradle-plugin:4.0.3'
     }
 }
 
@@ -42,12 +42,12 @@ dependencies {
     compile 'org.apache.velocity:velocity:1.7'
     compile 'javax.el:el-api:2.2'
 
-    compile 'org.flywaydb:flyway-core:3.2.1'
+    compile 'org.flywaydb:flyway-core:4.0.3'
     runtime 'org.hsqldb:hsqldb:2.3.2'
     compile 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
-    compile 'org.projectlombok:lombok:1.16.4'
-    compile 'args4j:args4j:2.32'
+    compile 'org.projectlombok:lombok:1.16.10'
+    compile 'args4j:args4j:2.33'
 
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testCompile "org.spockframework:spock-spring:1.0-groovy-2.4"
@@ -57,7 +57,7 @@ dependencies {
     testCompile 'org.objenesis:objenesis:2.1'
 }
 
-task wrapper(type: Wrapper) { gradleVersion = '2.5' }
+task wrapper(type: Wrapper) { gradleVersion = '3.0' }
 
 eclipse {
     pathVariables GRADLE_REPO: file(System.properties['user.home'] + '/.gradle/cache')
@@ -65,6 +65,7 @@ eclipse {
 
 flyway {
     url = 'jdbc:hsqldb:file:db/test'
+    locations = 'classpath:db/migration'
 }
 
 bootRun {

@@ -11,10 +11,10 @@ import sample.BaseSpecification
 
 class SendMailBatchConfigurationSpec extends BaseSpecification {
     @Autowired
-    private JobLauncher jobLauncher;
+    private JobLauncher jobLauncher
 
     @Autowired
-    private Job sendMailJob;
+    private Job sendMailJob
 
     def "Normal"() {
         when:

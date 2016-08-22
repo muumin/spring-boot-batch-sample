@@ -25,9 +25,11 @@ src/resources/sample-data.csv
 
     tarou,yamada,yamada@example.com
     hanako,yamada,yamada@example.com
-    
+
 * SMTP設定を変更
     * SMTP設定はsrc/resources/application.yml
+
+テスト用には[FakeSMTP](http://nilhcem.github.io/FakeSMTP/index.html)が便利です。
 
 ## コンパイル&テスト
 
@@ -54,13 +56,13 @@ src/resources/sample-data.csv
 
 # Spring-Boot-Batchのコマンドライン起動
 
-# デフォルトコマンドライン実行
+## デフォルトコマンドライン実行
 
 このサンプルではCommandLineRunnerを独自実装してコマンドライン実行をしています。
 
 SpringBoot-Batchではデフォルトでコマンドラインから実行する方法(JobLauncherCommandLineRunner)があります。
 
-## 実行手順
+### 実行手順
 
 * application.ymlのspring.batch.job.enabledをtrueに変更
 * sample.CommandLineBatchの@Componentをコメントアウト（DI対象外）
@@ -78,7 +80,7 @@ spring.batch.job.namesはカンマ区切りで複数のJobの指定が可能で�
 
     java -jar spring-boot-batch-sample.jar --spring.batch.job.names=sendMailJob,conditionalJob time(long)=1
 
-## 引数のパラメータ
+### 引数のパラメータ
 
 プロパティ(例では「time(long)=1」部分)は以下で型指定が可能です。
 
@@ -93,14 +95,14 @@ run.idはバッチ実行毎にインクリメントされるのでSpringBatchの
 
 [Configuring and Running a Job](http://docs.spring.io/spring-batch/trunk/reference/html/configureJob.html#restartability)
 
-## エラーJobの再実行
+### エラーJobの再実行
 
 直前の実行結果がエラー(STOP or FAILED)の場合でパラメータが同じ場合は再実行されます。
 
 例として「time(long)=1」で起動し、insertDataStepでエラーが発生した場合
 
     taskletlStep -> insertDataStep（エラー）-> sendMailStep
-    
+
 * 再度「time(long)=1」パラメータで実行
     * run.idは同じでinsertDataStepのエラーになった箇所から再開
 * 「time(long)=2」パラメータで実行
