@@ -41,11 +41,13 @@ spring:
 
   velocity:
     check-template-location: false
-
-java:
   mail:
-    from: hoge@example.com
+    default-encoding: UTF-8
+    protocol: smtp
     host: 127.0.0.1
     port: 1025
     username: hoge
     password: hoge
+    properties:
+      from: hoge@example.com
+

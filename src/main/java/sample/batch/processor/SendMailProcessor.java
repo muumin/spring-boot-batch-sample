@@ -18,7 +18,7 @@ public class SendMailProcessor implements ItemProcessor<Person, SimpleMailMessag
     @Autowired
     private VelocityEngineSupport velocityEngineSupport;
 
-    @Value("${java.mail.from}")
+    @Value("${spring.mail.properties.from}")
     private String from;
 
     @Override

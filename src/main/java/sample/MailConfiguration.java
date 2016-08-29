@@ -3,51 +3,17 @@ package sample;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.DataSourceResourceLoader;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import javax.sql.DataSource;
 
 @Configuration
 public class MailConfiguration {
-
-    @Value("${java.mail.host}")
-    private String host;
-
-    @Value("${java.mail.port}")
-    private Integer port;
-
-    @Value("${java.mail.username}")
-    private String username;
-
-    @Value("${java.mail.password}")
-    private String password;
-
-
-    @Bean
-    public MailSender javaMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(host);
-        mailSender.setPort(port);
-        mailSender.setUsername(username);
-        mailSender.setPassword(password);
-
-        Properties javaMailProperties = new Properties();
-        javaMailProperties.put("mail.smtp.auth", true);
-        javaMailProperties.put("mail.smtp.starttls.enable", true);
-        mailSender.setJavaMailProperties(javaMailProperties);
-
-        return mailSender;
-    }
-
     @Bean
     public ResourceLoader templateLoader(DataSource dataSource) {
         DataSourceResourceLoader loader = new DataSourceResourceLoader();
