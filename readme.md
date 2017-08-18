@@ -1,6 +1,4 @@
-Spring Boot Batch Sample
-=====================================
-
+#Spring Boot Batch Sample
 
 # 動作
 
@@ -54,9 +52,9 @@ src/resources/sample-data.csv
     gradlew bootRun -Pargs="-job sendMailJob -restart"
     java -jar spring-boot-batch-sample.jar -job sendMailJob -restart
 
-# Spring-Boot-Batchのコマンドライン起動
+## Spring-Boot-Batchのコマンドライン起動
 
-## デフォルトコマンドライン実行
+### デフォルトコマンドライン実行
 
 このサンプルではCommandLineRunnerを独自実装してコマンドライン実行をしています。
 
